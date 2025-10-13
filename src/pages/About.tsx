@@ -1,7 +1,8 @@
 import React, {useRef} from "react";
 import "../styles/Pages.css";
 import "../styles/About.css";
-import {useIntersectionObserver} from "../hooks/useIntersectionObserver.ts";
+import {useIntersectionObserver} from "../hooks/useIntersectionObserver";
+import {useTypewriter} from "../hooks/useTypewriter";
 
 const About: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -12,16 +13,18 @@ const About: React.FC = () => {
 
     useIntersectionObserver([section1Ref, section2Ref, section3Ref, section4Ref], {threshold: 0.5});
 
+    const typewriterText = useTypewriter("Welcome to the About Page", 50);
+
     return (
         <div ref={containerRef} className="home-container">
-            <section
-                className="fade-in-section first-section"
-                ref={section1Ref}
-            >
-                <h1>Welcome to the About Page</h1>
+            <section className="fade-in-section first-section" ref={section1Ref}>
+                <h1>{typewriterText}</h1>
                 <ul className="social small">
-                    <li><a target="_blank" href="https://github.com/fragmepls"><i
-                        className="fab fa-github icon"></i></a></li>
+                    <li>
+                        <a target="_blank" href="https://github.com/fragmepls">
+                            <i className="fab fa-github icon"></i>
+                        </a>
+                    </li>
                 </ul>
             </section>
             <section className="fade-in-section" ref={section2Ref}>
