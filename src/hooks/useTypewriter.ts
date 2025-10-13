@@ -1,8 +1,8 @@
 import {useEffect, useMemo, useState} from "react";
 
-export const useTypewriter = (text, speed = 20) => {
+export const useTypewriter = (text: string, speed = 20) => {
     const [index, setIndex] = useState(0);
-    const displayText = useMemo(() => text.slice(0, index), [index]);
+    const displayText = useMemo(() => text.slice(0, index), [index, text]);
     useEffect(() => {
         if (index >= text.length)
             return;
