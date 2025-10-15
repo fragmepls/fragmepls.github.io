@@ -1,0 +1,25 @@
+:root {
+    /* Colors */
+    --color-background: #111;
+    --color-text: rgba(255, 255, 255, 0.87);
+    --color-accent: #646cff;
+    --color-accent-hover: #535bf2;
+    --color-dark: #0F1724;
+    --color-light: #ffffff;
+
+    /* Typography */
+    --font-family-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    --font-family-heading: 'Poppins', sans-serif;
+
+    /* Spacing */
+    --spacing-sm: 0.25rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+
+    /* Social icons */
+    --social-size-default: 80px;
+    --social-size-small: 56px;
+    --icon-size-default: 35px;
+    --icon-size-small: 20px;
+    --border-thickness: 0.06;
+}

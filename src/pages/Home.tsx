@@ -1,6 +1,7 @@
 import React, {useRef} from "react";
 import "../styles/Pages.css";
 import "../styles/Home.css";
+import "../styles/Social.css";
 import {useIntersectionObserver} from "../hooks/useIntersectionObserver";
 import {useTypewriter} from "../hooks/useTypewriter";
 
