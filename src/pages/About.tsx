@@ -21,7 +21,7 @@ const About: React.FC = () => {
                 <h1>{typewriterText}</h1>
                 <ul className="social small">
                     <li>
-                        <a target="_blank" href="https://github.com/fragmepls">
+                        <a target="_blank" rel="noopener noreferrer" href="https://github.com/fragmepls">
                             <i className="fab fa-github icon"></i>
                         </a>
                     </li>

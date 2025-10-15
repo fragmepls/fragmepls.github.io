@@ -116,3 +116,49 @@ a:hover {
 .social li:nth-child(2) a:before {
     background: #0077b5;
 }
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    position: relative;
+    background-color: transparent;
+}
+
+.home-container {
+    position: relative;
+    min-height: 100vh;
+    z-index: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.fade-in-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.first-section {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+    margin-bottom: 0;
+}
+
+.no-scroll .fade-in-section {
+    margin-bottom: 0;
+}
