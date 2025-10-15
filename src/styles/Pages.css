@@ -110,11 +110,7 @@ a:hover {
 }
 
 .social li:nth-child(1) a:before {
-    background: #55acee;
-}
-
-.social li:nth-child(2) a:before {
-    background: #0077b5;
+    background: #000000;
 }
 
 body, html {
