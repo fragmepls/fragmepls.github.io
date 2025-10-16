@@ -1,11 +1,13 @@
 :root {
-    /* Colors */
+    /* Colors - Dark Theme (Default) */
     --color-background: #111;
     --color-text: rgba(255, 255, 255, 0.87);
     --color-accent: #646cff;
     --color-accent-hover: #535bf2;
     --color-dark: #0F1724;
     --color-light: #ffffff;
+    --color-block: #1a1a1a;
+    --color-block-hover: #252525;
 
     /* Typography */
     --font-family-main: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -22,4 +24,19 @@
     --icon-size-default: 35px;
     --icon-size-small: 20px;
     --border-thickness: 0.06;
+
+    /* Transitions */
+    --transition-speed: 0.3s;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --color-background: #f9f9f9;
+    --color-text: #333333;
+    --color-accent: #535bf2;
+    --color-accent-hover: #4248d3;
+    --color-dark: #e5e7eb;
+    --color-light: #0F1724;
+    --color-block: #e8e8e8;
+    --color-block-hover: #d0d0d0;
 }

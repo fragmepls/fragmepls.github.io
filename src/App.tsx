@@ -5,6 +5,7 @@ import About from "./pages/About";
 import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
 import "./App.css";
 import Header from "./components/Header.tsx";
+import {ThemeProvider} from "./context/ThemeProvider";
 
 const ScrollToTop: React.FC = () => {
     const location = useLocation();
@@ -18,20 +19,19 @@ const ScrollToTop: React.FC = () => {
 };
 
 const App: React.FC = () => (
-    <Router>
-        <InteractiveBlockGrid
-            baseColor="#333333"
-            highlightColor="#ff2525"
-        />
-        <Header/>
-        <ScrollToTop/>
-        <main className="app-content">
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/about" element={<About/>}/>
-            </Routes>
-        </main>
-    </Router>
+    <ThemeProvider>
+        <Router>
+            <InteractiveBlockGrid/>
+            <Header/>
+            <ScrollToTop/>
+            <main className="app-content">
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/about" element={<About/>}/>
+                </Routes>
+            </main>
+        </Router>
+    </ThemeProvider>
 );
 
 export default App;

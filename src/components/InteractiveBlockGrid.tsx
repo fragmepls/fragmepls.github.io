@@ -1,4 +1,5 @@
-import {useRef, useEffect, useState} from 'react';
+import {useRef, useEffect, useState, useContext} from 'react';
+import {ThemeContext} from '../context/ThemeContext';
 
 interface Block {
     x: number;
@@ -19,8 +20,8 @@ interface InteractiveBlockGridProps {
 
 const InteractiveBlockGrid =
     ({
-         baseColor = '#333333',
-         highlightColor = '#ff2525'
+         baseColor,
+         highlightColor
      }: InteractiveBlockGridProps) => {
         const canvasRef = useRef<HTMLCanvasElement | null>(null);
         const requestIdRef = useRef<number | null>(null);
@@ -28,6 +29,12 @@ const InteractiveBlockGrid =
             width: window.innerWidth,
             height: window.innerHeight
         });
+
+        const {theme} = useContext(ThemeContext);
+
+        // Determine colors based on theme
+        const effectiveBaseColor = baseColor || (theme === 'dark' ? '#1a1a1a' : '#e8e8e8');
+        const effectiveHighlightColor = highlightColor || (theme === 'dark' ? '#ff2525' : '#535bf2');
 
         useEffect(() => {
             const canvas = canvasRef.current;
@@ -144,8 +151,8 @@ const InteractiveBlockGrid =
                 // Draw blocks
                 for (const block of sortedBlocks) {
                     if (block.normalizedSpeed > 0.05) {
-                        const baseCol = baseColor.replace('#', '');
-                        const highlightCol = highlightColor.replace('#', '');
+                        const baseCol = effectiveBaseColor.replace('#', '');
+                        const highlightCol = effectiveHighlightColor.replace('#', '');
 
                         // Handle both 3-digit and 6-digit hex formats
                         const baseR = parseInt(baseCol.length === 3 ? baseCol[0] + baseCol[0] : baseCol.substring(0, 2), 16);
@@ -163,7 +170,7 @@ const InteractiveBlockGrid =
 
                         ctx.fillStyle = `rgb(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)})`;
                     } else {
-                        ctx.fillStyle = baseColor;
+                        ctx.fillStyle = effectiveBaseColor;
                     }
 
                     ctx.fillRect(block.x + block.offsetX, block.y + block.offsetY, blockSize, blockSize);
@@ -237,7 +244,7 @@ const InteractiveBlockGrid =
                     cancelAnimationFrame(requestIdRef.current);
                 }
             };
-        }, [dimensions, baseColor, highlightColor]);
+        }, [dimensions, effectiveBaseColor, effectiveHighlightColor, theme]);
 
         return (
             <canvas
