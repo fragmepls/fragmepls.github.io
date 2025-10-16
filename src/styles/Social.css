@@ -41,9 +41,9 @@
     padding: 0;
     margin: 0;
     border-radius: 50%;
-    border: var(--current-border) solid #fff;
-    background-color: #fff;
-    color: #262626;
+    border: var(--current-border) solid var(--color-light);
+    background-color: var(--color-light);
+    color: var(--color-dark);
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -53,7 +53,7 @@
 
 .social li a .icon {
     position: relative;
-    color: #262626;
+    color: var(--color-dark);
     transition: .5s;
     z-index: 3;
     font-size: var(--current-icon-size);
@@ -61,7 +61,7 @@
 }
 
 .social li a:hover .icon {
-    color: #fff;
+    color: var(--color-light);
     transform: rotateY(360deg);
 }
 
@@ -82,5 +82,5 @@
 }
 
 .social li:nth-child(1) a:before {
-    background: #000000;
+    background: var(--color-dark);
 }
