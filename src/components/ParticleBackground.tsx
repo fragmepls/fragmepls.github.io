@@ -20,6 +20,10 @@ interface Particle {
     x: number;
     y: number;
     color: string;
+    twinkleSpeed: number;
+    twinkleOffset: number;
+    baseOpacity: number;
+    depth: number;
 }
 
 const ParticleBackground: React.FC = () => {
@@ -64,7 +68,17 @@ const ParticleBackground: React.FC = () => {
                 color = `rgba(${70 + Math.random() * 40}, ${130 + Math.random() * 60}, ${200 + Math.random() * 55}, 0.8)`;
             }
 
-            return {baseX, baseY, size, x: baseX, y: baseY, color};
+            const twinkleSpeed = 0.03 + Math.random() * 0.05;
+            const twinkleOffset = Math.random() * Math.PI * 2;
+            const baseOpacity = 0.5 + Math.random() * 0.5;
+
+            const depth = Math.random();
+            const adjustedSize = size * (0.5 + depth * 0.5);
+
+            return {
+                baseX, baseY, size: adjustedSize, x: baseX, y: baseY, color,
+                twinkleSpeed, twinkleOffset, baseOpacity, depth
+            };
         });
 
         const ctx = canvas.getContext('2d');
@@ -76,6 +90,8 @@ const ParticleBackground: React.FC = () => {
             const mouseX = mouseRef.current.x;
             const mouseY = mouseRef.current.y;
 
+            const time = Date.now() * 0.001;
+
             particlesRef.current.forEach(particle => {
                 const {baseX, baseY, size, color} = particle;
 
@@ -86,17 +102,51 @@ const ParticleBackground: React.FC = () => {
                 const deltaY = baseY - mouseY;
                 const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
+                const opacityFactor = 0.5 + 0.5 * Math.sin(time * particle.twinkleSpeed + particle.twinkleOffset);
+                const opacity = particle.baseOpacity * opacityFactor;
+
+                const colorMatch = particle.color.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*[\d.]+\)/);
+                if (colorMatch) {
+                    ctx.fillStyle = `rgba(${colorMatch[1]}, ${colorMatch[2]}, ${colorMatch[3]}, ${opacity})`;
+                } else {
+                    ctx.fillStyle = particle.color;
+                }
+
                 if (distance < REPULSION_RADIUS) {
                     const angle = Math.atan2(deltaY, deltaX);
                     const force = (REPULSION_RADIUS - distance) / REPULSION_RADIUS;
-                    x += Math.cos(angle) * force * MAX_DISPLACEMENT;
-                    y += Math.sin(angle) * force * MAX_DISPLACEMENT;
+                    const depthFactor = 0.2 + particle.depth * 0.8;
+                    x += Math.cos(angle) * force * MAX_DISPLACEMENT * depthFactor;
+                    y += Math.sin(angle) * force * MAX_DISPLACEMENT * depthFactor;
                 }
 
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.arc(x, y, size, 0, Math.PI * 2);
-                ctx.fill();
+
+                const renderStar = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, color: string) => {
+                    const gradient = ctx.createRadialGradient(x, y, 0, x, y, size * 3);
+
+                    const colorMatch = color.match(/rgba\((\d+),\s*(\d+),\s*(\d+),\s*[\d.]+\)/);
+                    if (colorMatch) {
+                        const [r, g, b] = [colorMatch[1], colorMatch[2], colorMatch[3]];
+                        gradient.addColorStop(0, color);
+                        gradient.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.3)`);
+                        gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+                    } else {
+                        gradient.addColorStop(0, color);
+                        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    }
+
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(x, y, size * 3, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.beginPath();
+                    ctx.arc(x, y, size * 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                };
+
+                renderStar(ctx, x, y, size, color);
 
                 particle.x = x;
                 particle.y = y;
