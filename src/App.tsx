@@ -1,12 +1,13 @@
 import React, {useEffect} from "react";
 import {BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
-import Header from "./components/Header.tsx";
-import {ThemeProvider} from "./context/ThemeProvider";
+
 import "./App.css";
-import logo from "../public/galaxy.svg"
+import logo from "../public/galaxy.svg";
+import Header from "./components/Header";
+import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
+import ThemeProvider from "./context/ThemeProvider";
+import About from "./pages/About";
+import Home from "./pages/Home";
 
 const ScrollToTop: React.FC = () => {
     const location = useLocation();
