@@ -8,11 +8,8 @@ import {useTypewriter} from "../hooks/useTypewriter";
 const About: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const section1Ref = useRef<HTMLElement>(null);
-    const section2Ref = useRef<HTMLElement>(null);
-    const section3Ref = useRef<HTMLElement>(null);
-    const section4Ref = useRef<HTMLElement>(null);
 
-    useIntersectionObserver([section1Ref, section2Ref, section3Ref, section4Ref], {threshold: 0.5});
+    useIntersectionObserver([section1Ref], {threshold: 0.5});
 
     const typewriterText = useTypewriter("Welcome to the About Page", 50);
 
@@ -27,14 +24,6 @@ const About: React.FC = () => {
                         </a>
                     </li>
                 </ul>
-            </section>
-            <section className="fade-in-section" ref={section2Ref}>
-                <h2>Section 2</h2>
-                <p>Test content</p>
-            </section>
-            <section className="fade-in-section" ref={section3Ref}>
-                <h2>Section 3</h2>
-                <p>Test content</p>
             </section>
         </div>
     );

@@ -46,7 +46,7 @@ This site is configured for continuous deployment to GitHub Pages using GitHub A
 
 ## TODO
 
-* **Theme toggle** (light/dark) that updates styles/variables.css, persists in localStorage, and syncs with OS preference.
+* ~~**Theme toggle** (light/dark) that updates styles/variables.css, persists in localStorage, and syncs with OS preference.~~ Done
 * **PWA support:** add public/manifest.json, service worker, and offline caching for assets and pages.
 * **Route-based** code splitting / lazy loading for pages and heavy components (use React.lazy + Suspense).
 * **Image and asset** optimization / responsive images (srcset, lazy loading, modern formats).
