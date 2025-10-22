@@ -47,7 +47,7 @@ const InteractiveBlockGrid =
             canvas.width = dimensions.width;
             canvas.height = dimensions.height;
 
-            const blockSize = 12;
+            const blockSize = 8;
             const spacing = 2.5;
             const cols = Math.floor(dimensions.width / (blockSize + spacing));
             const rows = Math.floor(dimensions.height / (blockSize + spacing));

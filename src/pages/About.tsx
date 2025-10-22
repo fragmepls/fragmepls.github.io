@@ -14,15 +14,13 @@ const About: React.FC = () => {
     const typewriterText = useTypewriter("Welcome to the About Page", 50);
 
     return (
-        <div ref={containerRef} className="home-container">
+        <div ref={containerRef} className="home-container no-scroll">
             <section className="fade-in-section first-section" ref={section1Ref}>
                 <h1>{typewriterText}</h1>
                 <ul className="social small">
-                    <li>
-                        <a target="_blank" rel="noopener noreferrer" href="https://github.com/fragmepls">
-                            <i className="fab fa-github icon"></i>
-                        </a>
-                    </li>
+                    <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/fragmepls">
+                        <i className="fab fa-github icon"></i>
+                    </a></li>
                 </ul>
             </section>
         </div>

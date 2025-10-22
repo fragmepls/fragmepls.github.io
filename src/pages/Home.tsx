@@ -15,10 +15,7 @@ const Home: React.FC = () => {
 
     return (
         <div ref={containerRef} className="home-container no-scroll">
-            <section
-                className="fade-in-section first-section"
-                ref={section1Ref}
-            >
+            <section className="fade-in-section first-section" ref={section1Ref}>
                 <h1>{typewriterText}</h1>
                 <ul className="social small">
                     <li><a target="_blank" rel="noopener noreferrer" href="https://github.com/fragmepls">
