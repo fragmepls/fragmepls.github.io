@@ -11,7 +11,7 @@ const Home: React.FC = () => {
 
     useIntersectionObserver([section1Ref], {threshold: 0.5});
 
-    const typewriterText = useTypewriter("Welcome to the Home Page", 50);
+    const typewriterText = useTypewriter("Welcome", 50);
 
     return (
         <div ref={containerRef} className="home-container no-scroll">
