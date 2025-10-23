@@ -1,5 +1,5 @@
-import {useRef, useEffect, useState, useContext} from 'react';
-import {ThemeContext} from '../context/ThemeContext';
+import {useRef, useEffect, useState} from 'react';
+import {useThemeContext} from '../context/ThemeContext';
 
 interface Block {
     x: number;
@@ -35,7 +35,7 @@ const InteractiveBlockGrid = ({
         height: window.innerHeight
     });
 
-    const {theme} = useContext(ThemeContext);
+    const {theme} = useThemeContext();
 
     // Determine colors based on theme
     const effectiveBaseColor = baseColor || (theme === 'dark' ? '#1a1a1a' : '#e8e8e8');
