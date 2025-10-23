@@ -48,9 +48,9 @@ This site is configured for continuous deployment to GitHub Pages using GitHub A
 
 ## TODO (Generated)
 
-* Theme refinements
-    * Add animated theme transitions, system sync and per-page theme metadata. Example files: src/styles/variables.css,
-      src/hooks/useTheme.ts.
+* ~~Theme refinements~~
+    * ~~Add animated theme transitions, system sync and per-page theme metadata. Example files: src/styles/variables.css,
+      src/hooks/useTheme.ts.~~
 * **PWA & offline support**
     * Add public/manifest.json, a service worker (src/service-worker.ts) and caching strategies for assets and routes.
 * Route-based code splitting
