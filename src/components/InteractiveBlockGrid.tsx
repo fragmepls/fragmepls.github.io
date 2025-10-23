@@ -206,8 +206,8 @@ const InteractiveBlockGrid = ({
 
                 // Random movement
                 if (Math.random() < 0.05) {
-                    block.vx += (Math.random() - 0.5) * 0.4;
-                    block.vy += (Math.random() - 0.5) * 0.4;
+                    block.vx += (Math.random() - 0.5) * 2;
+                    block.vy += (Math.random() - 0.5) * 2;
                 }
 
                 // Apply velocity and friction
