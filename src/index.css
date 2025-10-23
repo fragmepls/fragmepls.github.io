@@ -17,12 +17,6 @@ body, html {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* App container */
-.App {
-    width: 100vw;
-    height: 100vh;
-}
-
 /* Typography */
 h1 {
     font-size: 3.2em;

@@ -6,7 +6,7 @@
     <title>Redirecting...</title>
     <script>
         const path = window.location.pathname;
-        const redirectURL = '/' + (path.indexOf('/') === 0 ? path.substr(1) : path);
+        const redirectURL = '/' + (path.indexOf('/') === 0 ? path.slice(1) : path);
         sessionStorage.setItem('redirect', redirectURL);
         window.location.replace('/');
     </script>

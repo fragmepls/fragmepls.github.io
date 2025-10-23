@@ -26,7 +26,7 @@ interface Particle {
     depth: number;
 }
 
-const ParticleBackground: React.FC = () => {
+export const ParticleBackground: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const particlesRef = useRef<Particle[]>([]);
     const mouseRef = useRef({x: -1000, y: -1000});
@@ -188,5 +188,3 @@ const ParticleBackground: React.FC = () => {
         </>
     );
 };
-
-export default ParticleBackground;
