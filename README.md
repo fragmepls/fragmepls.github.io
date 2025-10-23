@@ -13,9 +13,11 @@ features an interactive block background and is designed to be deployed as a sta
 ├── src/                    # Source files
 │   ├── assets/             # Images, fonts, etc.
 │   ├── components/         # Reusable React components
+│   ├── context/            # React context providers
 │   ├── hooks/              # Custom React hooks
 │   ├── pages/              # Page components
 │   ├── routes/             # Routing configuration
+│   ├── services/           # API and data fetching services
 │   ├── styles/             # Global and component-specific styles
 │   ├── App.tsx             # Main App component
 │   └── main.tsx            # Entry point of the application
@@ -44,20 +46,43 @@ This site is configured for continuous deployment to GitHub Pages using GitHub A
 * [Vite](https://vitejs.dev/)
 * [TypeScript](https://www.typescriptlang.org/)
 
-## TODO
+## TODO (Generated)
 
-* ~~**Theme toggle** (light/dark) that updates styles/variables.css, persists in localStorage, and syncs with OS preference.~~ Done
-* **PWA support:** add public/manifest.json, service worker, and offline caching for assets and pages.
-* **Route-based** code splitting / lazy loading for pages and heavy components (use React.lazy + Suspense).
-* **Image and asset** optimization / responsive images (srcset, lazy loading, modern formats).
-* **Accessibility improvements:** skip link, focus outlines, ARIA roles, semantic landmarks, color contrast checks.
-* **Keyboard navigation** and keyboard shortcuts for common actions (toggle theme, skip to work).
-* **Consent banner** and privacy‑first analytics (Plausible or self‑hosted) with opt-in.
-* **Contact form** with validation and spam protection (reCAPTCHA or serverless form endpoint via Netlify/Vercel/API).
-* **SEO and metadata:** dynamic meta tags, Open Graph, sitemap.xml and robots.txt in public/.
-* **Progressive reveal** / scroll animations using src/hooks/useIntersectionObserver.ts for performance and engagement; respect prefers-reduced-motion.
-* **Tests and CI:** unit tests for components and hooks, Storybook for UI, and GitHub Actions for lint/test/build deploy.
-* **CMS** or headless content source for projects/blog posts (MDX, Contentful, Sanity) and an admin workflow.
-* **Resume export** / print stylesheet and a downloadable PDF generator endpoint.
-* **Live previews** or embeds (code sandbox / GitHub gist) and a copy-to-clipboard button for code samples.
-* **Performance monitoring** & Lighthouse audits integrated into CI and report generation.
+* Theme refinements
+    * Add animated theme transitions, system sync and per-page theme metadata. Example files: src/styles/variables.css,
+      src/hooks/useTheme.ts.
+* **PWA & offline support**
+    * Add public/manifest.json, a service worker (src/service-worker.ts) and caching strategies for assets and routes.
+* Route-based code splitting
+    * Lazy load pages and heavy components with React.lazy + Suspense and chunk naming in vite.config.ts.
+* Image optimization & responsive images
+    * Serve AVIF/WebP, use src/components/ResponsiveImage.tsx and preload critical images.
+* **Accessibility improvements**
+    * Add skip link, landmarks, keyboard focus styles, ARIA attributes and run automated checks with axe in CI.
+* **SEO & metadata**
+    * Dynamic meta tags per route, Open Graph, JSON-LD, sitemap.xml generator and robots.txt in public/.
+* Search & filtering for projects
+    * Client-side fuzzy search, tags, and filters. Component: src/components/ProjectList.tsx.
+* Contact form + serverless endpoint
+    * Add src/components/ContactForm.tsx and a Netlify/Vercel function or GitHub Action endpoint for submissions.
+* CMS / content authoring
+    * Add MDX blog support or headless CMS integration (Sanity/Contentful) and an admin workflow.
+* **Tests & visual regression**
+    * Unit tests (Jest/Testing Library), component snapshots, Storybook and visual tests (Chromatic or Percy).
+* Performance budgets & CI checks
+    * Lighthouse CI, build-time bundle analysis and automated performance regression alerts.
+* Privacy-first analytics & consent
+    * Integrate Plausible or self-hosted analytics behind a consent banner stored in localStorage.
+* Error monitoring & observability
+    * Add Sentry or similar for runtime errors, and Real User Monitoring (RUM) for performance.
+* Resume/export & printable pages
+    * Print-friendly styles and a PDF export endpoint or client-side generation.
+* Developer experience
+    * Husky pre-commit hooks, lint-staged, npm scripts for common tasks, and GitHub Actions for lint/test/build.
+* Micro-interactions & accessibility-first animations
+    * Subtle motion using CSS transform/opacity (prefers-reduced-motion aware) and animated background improvements in
+      src/components/Background.tsx.
+* Internationalization (i18n)
+    * Add react-i18next and translation files under src/locales/ for localized content.
+* Server-side rendering / prerendering for pages
+    * Pre-render important pages for better SEO (Vite prerender plugin or static generation).

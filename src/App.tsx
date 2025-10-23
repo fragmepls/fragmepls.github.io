@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom";
 
 import "./App.css";
-import logo from "../public/galaxy.svg";
+import logo from "./galaxy.svg";
 import Header from "./components/Header";
 import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
 import ThemeProvider from "./context/ThemeProvider";
@@ -21,12 +21,12 @@ const ScrollToTop: React.FC = () => {
 };
 
 const App: React.FC = () => (
-    <ThemeProvider>
-        <Router>
+    <Router>
+        <ThemeProvider>
             <InteractiveBlockGrid
                 imageToTrace={logo}
-                traceThreshold={150}  // Optional: controls darkness threshold
-                traceDensity={1.5}    // Optional: controls block density
+                traceThreshold={150}
+                traceDensity={1.5}
             />
             <Header/>
             <ScrollToTop/>
@@ -36,8 +36,8 @@ const App: React.FC = () => (
                     <Route path="/about" element={<About/>}/>
                 </Routes>
             </main>
-        </Router>
-    </ThemeProvider>
+        </ThemeProvider>
+    </Router>
 );
 
 export default App;

@@ -1,51 +1,38 @@
-// src/context/ThemeProvider.tsx
-import React, {useState, useEffect} from 'react';
-import type {ReactNode} from 'react';
-import {ThemeContext, type Theme} from './ThemeContext';
+import React, {useMemo, useEffect, type ReactNode} from 'react';
+import {useLocation} from 'react-router-dom';
+import {useTheme} from '../hooks/useTheme';
+import {pageThemes} from '../config/pageThemes';
+import {ThemeContext} from './ThemeContext';
 
-interface ThemeProviderProps {
-    children: ReactNode;
-}
+const ThemeProvider: React.FC<{ children: ReactNode }> = ({children}) => {
+    const {theme, themeSource, toggleTheme, resetToSystemTheme} = useTheme();
+    const location = useLocation();
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({children}) => {
-    const [theme, setTheme] = useState<Theme>(() => {
-        // Check localStorage first
-        const savedTheme = localStorage.getItem('theme') as Theme;
-        if (savedTheme) return savedTheme;
-
-        // If no saved preference, check system preference
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    });
+    const pageTheme = useMemo(() => pageThemes[location.pathname] || pageThemes['/'], [location.pathname]);
 
     useEffect(() => {
-        // Update data-theme attribute on document element
-        document.documentElement.setAttribute('data-theme', theme);
-        // Save to localStorage
-        localStorage.setItem('theme', theme);
-    }, [theme]);
+        if (pageTheme.preferredTheme && themeSource !== 'user') {
+            document.documentElement.setAttribute('data-theme', pageTheme.preferredTheme);
+        }
+    }, [pageTheme, themeSource]);
 
-    // Listen for system preference changes
     useEffect(() => {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const handleChange = (e: MediaQueryListEvent) => {
-            if (!localStorage.getItem('theme')) {
-                setTheme(e.matches ? 'dark' : 'light');
-            }
-        };
+        if (pageTheme.accentColor) {
+            document.documentElement.style.setProperty('--color-accent', pageTheme.accentColor);
+        }
+        document.documentElement.setAttribute('data-background', pageTheme.backgroundStyle || 'default');
+    }, [pageTheme]);
 
-        mediaQuery.addEventListener('change', handleChange);
-        return () => mediaQuery.removeEventListener('change', handleChange);
-    }, []);
-
-    const toggleTheme = () => {
-        setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    const value = {
+        theme,
+        themeSource,
+        toggleTheme,
+        resetToSystemTheme,
+        accentColor: pageTheme.accentColor || '#default-accent',
+        backgroundStyle: pageTheme.backgroundStyle || 'default'
     };
 
-    return (
-        <ThemeContext.Provider value={{theme, toggleTheme}}>
-            {children}
-        </ThemeContext.Provider>
-    );
+    return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
 export default ThemeProvider;

@@ -27,6 +27,7 @@
 
     /* Transitions */
     --transition-speed: 0.3s;
+    --transition-duration: 0.3s;
 }
 
 /* Light Theme */
@@ -39,4 +40,18 @@
     --color-light: #0F1724;
     --color-block: #e8e8e8;
     --color-block-hover: #d0d0d0;
+
+    --transition-speed: 0.3s;
+    --transition-duration: 0.3s;
+}
+
+body {
+    transition: background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease;
+}
+
+.themed-element {
+    transition: background-color var(--transition-duration) ease,
+    color var(--transition-duration) ease,
+    border-color var(--transition-duration) ease;
 }
