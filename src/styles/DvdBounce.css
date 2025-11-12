@@ -1,0 +1,9 @@
+.dvd-bounce {
+    position: fixed;
+    padding: 20px 30px;
+    overflow: hidden;
+    border-radius: 0;
+    white-space: nowrap;
+    display: inline-block;
+    border: 2px solid var(--color-text);
+}

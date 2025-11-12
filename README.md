@@ -13,6 +13,7 @@ features an interactive block background and is designed to be deployed as a sta
 ├── src/                    # Source files
 │   ├── assets/             # Images, fonts, etc.
 │   ├── components/         # Reusable React components
+│   ├── config/             # Configuration files and constants
 │   ├── context/            # React context providers
 │   ├── hooks/              # Custom React hooks
 │   ├── pages/              # Page components

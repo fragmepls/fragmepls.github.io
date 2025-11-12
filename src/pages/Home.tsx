@@ -2,6 +2,7 @@ import React, {useRef} from "react";
 import "../styles/Pages.css";
 import "../styles/Home.css";
 import "../styles/Social.css";
+import {DvdBounce} from "../components/DvdBounce";
 import {useIntersectionObserver} from "../hooks/useIntersectionObserver";
 import Typewriter from "typewriter-effect";
 
@@ -13,6 +14,7 @@ const Home: React.FC = () => {
 
     return (
         <div ref={containerRef} className="home-container no-scroll">
+            <DvdBounce/>
             <section className="fade-in-section first-section" ref={section1Ref}>
                 <h1>
                     <Typewriter
