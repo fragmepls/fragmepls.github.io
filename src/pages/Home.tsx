@@ -1,14 +1,16 @@
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 import "../styles/Pages.css";
 import "../styles/Home.css";
 import "../styles/Social.css";
 import {DvdBounce} from "../components/DvdBounce";
 import {useIntersectionObserver} from "../hooks/useIntersectionObserver";
 import Typewriter from "typewriter-effect";
+import UserInputForm from "../components/UserInputForm";
 
 const Home: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const section1Ref = useRef<HTMLElement>(null);
+    const [showInput, setShowInput] = useState(false);
 
     useIntersectionObserver([section1Ref], {threshold: 0.5});
 
@@ -16,18 +18,30 @@ const Home: React.FC = () => {
         <div ref={containerRef} className="home-container no-scroll">
             <DvdBounce/>
             <section className="fade-in-section first-section" ref={section1Ref}>
-                <h1>
-                    <Typewriter
-                        options={{
-                            strings: ["Welcome"],
-                            autoStart: true,
-                            loop: false,
-                            delay: 80,
-                            cursor: "|",
-                            deleteSpeed: Infinity,
-                        }}
-                    />
-                </h1>
+                <div className="content-wrapper">
+                    {showInput ? (
+                        <UserInputForm/>
+                    ) : (
+                        <h1>
+                            <Typewriter
+                                onInit={(typewriter) => {
+                                    typewriter
+                                        .typeString("Welcome")
+                                        .pauseFor(1000)
+                                        .deleteAll(1)
+                                        .callFunction(() => {
+                                            setShowInput(true);
+                                        })
+                                        .start();
+                                }}
+                                options={{
+                                    cursor: "|",
+                                    delay: 80,
+                                }}
+                            />
+                        </h1>
+                    )}
+                </div>
                 <ul className="social small">
                     <li>
                         <a target="_blank" rel="noopener noreferrer"
