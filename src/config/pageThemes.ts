@@ -10,8 +10,7 @@ export const pageThemes: Record<string, PageTheme> = {
         backgroundStyle: 'particles',
     },
     '/about': {
-        preferredTheme: 'light',
-        accentColor: '#3498db',
-        backgroundStyle: 'gradient',
+        preferredTheme: null,
+        backgroundStyle: 'particles',
     },
 };

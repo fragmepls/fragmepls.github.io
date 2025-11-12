@@ -11,20 +11,26 @@ const ThemeProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const pageTheme = useMemo(() => pageThemes[location.pathname] || pageThemes['/'], [location.pathname]);
 
     useEffect(() => {
-        if (pageTheme.preferredTheme && themeSource !== 'user') {
-            document.documentElement.setAttribute('data-theme', pageTheme.preferredTheme);
-        }
-    }, [pageTheme, themeSource]);
-
-    useEffect(() => {
         if (pageTheme.accentColor) {
             document.documentElement.style.setProperty('--color-accent', pageTheme.accentColor);
         }
         document.documentElement.setAttribute('data-background', pageTheme.backgroundStyle || 'default');
     }, [pageTheme]);
 
+    useEffect(() => {
+        if (pageTheme.preferredTheme && themeSource !== 'user') {
+            document.documentElement.setAttribute('data-theme', pageTheme.preferredTheme);
+        } else {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+    }, [pageTheme, themeSource, theme]);
+
+    const effectiveTheme = (pageTheme.preferredTheme && themeSource !== 'user')
+        ? pageTheme.preferredTheme
+        : theme;
+
     const value = {
-        theme,
+        theme: effectiveTheme,
         themeSource,
         toggleTheme,
         resetToSystemTheme,
