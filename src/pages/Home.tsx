@@ -6,6 +6,7 @@ import {DvdBounce} from "../components/DvdBounce";
 import {useIntersectionObserver} from "../hooks/useIntersectionObserver";
 import Typewriter from "typewriter-effect";
 import UserInputForm from "../components/UserInputForm";
+import {SEO} from "../components/SEO";
 
 const Home: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -15,43 +16,51 @@ const Home: React.FC = () => {
     useIntersectionObserver([section1Ref], {threshold: 0.5});
 
     return (
-        <div ref={containerRef} className="home-container no-scroll">
-            <DvdBounce/>
-            <section className="fade-in-section first-section" ref={section1Ref}>
-                <div className="content-wrapper">
-                    {showInput ? (
-                        <UserInputForm/>
-                    ) : (
-                        <h1>
-                            <Typewriter
-                                onInit={(typewriter) => {
-                                    typewriter
-                                        .typeString("Welcome")
-                                        .pauseFor(1000)
-                                        .deleteAll()
-                                        .callFunction(() => {
-                                            setShowInput(true);
-                                        })
-                                        .start();
-                                }}
-                                options={{
-                                    cursor: "|",
-                                    delay: 80,
-                                }}
-                            />
-                        </h1>
-                    )}
-                </div>
-                <ul className="social small">
-                    <li>
-                        <a target="_blank" rel="noopener noreferrer"
-                           href="https://github.com/fragmepls">
-                            <i className="fab fa-github icon"></i>
-                        </a>
-                    </li>
-                </ul>
-            </section>
-        </div>
+        <>
+            <SEO
+                title="fragmepls - Home"
+                description="Welcome to my personal portfolio and projects showcase"
+                keywords="portfolio, web development, react, typescript"
+                path="/"
+            />
+            <div ref={containerRef} className="home-container no-scroll">
+                <DvdBounce/>
+                <section className="fade-in-section first-section" ref={section1Ref}>
+                    <div className="content-wrapper">
+                        {showInput ? (
+                            <UserInputForm/>
+                        ) : (
+                            <h1>
+                                <Typewriter
+                                    onInit={(typewriter) => {
+                                        typewriter
+                                            .typeString("Welcome")
+                                            .pauseFor(1000)
+                                            .deleteAll()
+                                            .callFunction(() => {
+                                                setShowInput(true);
+                                            })
+                                            .start();
+                                    }}
+                                    options={{
+                                        cursor: "|",
+                                        delay: 80,
+                                    }}
+                                />
+                            </h1>
+                        )}
+                    </div>
+                    <ul className="social small">
+                        <li>
+                            <a target="_blank" rel="noopener noreferrer"
+                               href="https://github.com/fragmepls">
+                                <i className="fab fa-github icon"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </>
     );
 };
 

@@ -8,7 +8,7 @@ import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
 import ThemeProvider from "./context/ThemeProvider";
 import About from "./pages/About";
 import Home from "./pages/Home";
-import PrivacyPolicy from "./components/PrivacyPolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 
 const ScrollToTop: React.FC = () => {
     const location = useLocation();
