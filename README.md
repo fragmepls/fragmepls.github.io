@@ -9,6 +9,7 @@ features an interactive block background and is designed to be deployed as a sta
 
 ```
 /
+├── functions/              # Firebase functions
 ├── public/                 # Static assets
 ├── src/                    # Source files
 │   ├── assets/             # Images, fonts, etc.
