@@ -21,7 +21,7 @@ function UserInputForm() {
         const sanitized = trimmedInput.replace(/[<>]/g, '');
 
         try {
-            const response = await fetch('https://YOUR_REGION-YOUR_PROJECT.cloudfunctions.net/submitInput', {
+            const response = await fetch(' https://us-central1-fragmeplsdotdev.cloudfunctions.net/submitInput ', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({text: sanitized})
