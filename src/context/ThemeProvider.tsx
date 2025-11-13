@@ -1,4 +1,4 @@
-import React, {useMemo, useEffect, type ReactNode} from 'react';
+import React, {type ReactNode, useEffect, useMemo} from 'react';
 import {useLocation} from 'react-router-dom';
 import {useTheme} from '../hooks/useTheme';
 import {pageThemes} from '../config/pageThemes';
