@@ -1,6 +1,4 @@
 import {useState} from 'react';
-import {collection, addDoc, serverTimestamp} from 'firebase/firestore';
-import {db} from '../firebase';
 import '../styles/UserInputForm.css';
 
 function UserInputForm() {
@@ -23,10 +21,13 @@ function UserInputForm() {
         const sanitized = trimmedInput.replace(/[<>]/g, '');
 
         try {
-            await addDoc(collection(db, 'userInputs'), {
-                text: sanitized,
-                timestamp: serverTimestamp()
+            const response = await fetch('https://YOUR_REGION-YOUR_PROJECT.cloudfunctions.net/submitInput', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({text: sanitized})
             });
+
+            if (!response.ok) console.error(response);
 
             setStatus('Sent successfully c:');
             setInput('');
@@ -35,6 +36,7 @@ function UserInputForm() {
             console.error(error);
         }
     };
+
 
     return (
         <form className="user-input-form" onSubmit={handleSubmit}>
