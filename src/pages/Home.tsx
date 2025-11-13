@@ -28,7 +28,7 @@ const Home: React.FC = () => {
                                     typewriter
                                         .typeString("Welcome")
                                         .pauseFor(1000)
-                                        .deleteAll(1)
+                                        .deleteAll()
                                         .callFunction(() => {
                                             setShowInput(true);
                                         })

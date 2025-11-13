@@ -18,7 +18,7 @@
     color: var(--color-text);
     border-radius: 0;
     outline: none;
-    transition: border-color 0.3s;
+    transition: border-color 0.5s;
 }
 
 .user-input-form input:focus {
@@ -26,19 +26,22 @@
 }
 
 .user-input-form button {
-    padding: 0.8rem 2rem;
-    font-size: 1.1rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
-    color: var(--color-text);
-    background-color: var(--color-background);
-    border: 2px solid var(--color-text);
+    color: var(--color-background);
+    background-color: var(--color-text);
+    border: 2px solid var(--color-background);
     border-radius: 0;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.5s ease;
 }
 
 .user-input-form button:hover {
-    background-color: rgba(128, 128, 128, 0.1);
+    color: var(--color-text);
+    border-color: var(--color-text);
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: rotateY(360deg);
 }
 
 .user-input-form p {

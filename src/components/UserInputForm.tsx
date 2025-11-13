@@ -10,9 +10,21 @@ function UserInputForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        const trimmedInput = input.trim();
+        if (!trimmedInput) {
+            setStatus('Please enter something');
+            return;
+        }
+        if (trimmedInput.length > 500) {
+            setStatus('Message too long (max 500 characters)');
+            return;
+        }
+
+        const sanitized = trimmedInput.replace(/[<>]/g, '');
+
         try {
             await addDoc(collection(db, 'userInputs'), {
-                text: input,
+                text: sanitized,
                 timestamp: serverTimestamp()
             });
 
@@ -26,14 +38,14 @@ function UserInputForm() {
 
     return (
         <form className="user-input-form" onSubmit={handleSubmit}>
+            {status && <p>{status}</p>}
             <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Tell me something..."
             />
-            <button type="submit">Submit</button>
-            {status && <p>{status}</p>}
+            <button type="submit">Send</button>
         </form>
     );
 }
