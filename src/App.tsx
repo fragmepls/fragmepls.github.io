@@ -8,7 +8,8 @@ import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
 import ThemeProvider from "./context/ThemeProvider";
 import About from "./pages/About";
 import Home from "./pages/Home";
-import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Footer from "./components/Footer";
 
 const ScrollToTop: React.FC = () => {
     const location = useLocation();
@@ -38,6 +39,7 @@ const App: React.FC = () => (
                     <Route path="/privacy" element={<PrivacyPolicy/>}/>
                 </Routes>
             </main>
+            <Footer/>
         </ThemeProvider>
     </Router>
 );
