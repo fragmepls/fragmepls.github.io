@@ -1,6 +1,6 @@
 :root {
     /* Colors - Dark Theme (Default) */
-    --color-background: #111;
+    --color-background: rgba(17, 17, 17);
     --color-text: rgba(255, 255, 255, 0.87);
     --color-accent: #646cff;
     --color-accent-hover: #535bf2;
@@ -32,7 +32,7 @@
 
 /* Light Theme */
 [data-theme="light"] {
-    --color-background: #f9f9f9;
+    --color-background: rgba(249, 249, 249);
     --color-text: #333333;
     --color-accent: #535bf2;
     --color-accent-hover: #4248d3;
