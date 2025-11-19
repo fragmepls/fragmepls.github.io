@@ -2,8 +2,6 @@ import React, {useEffect} from "react";
 import {BrowserRouter as Router, Route, Routes, useLocation} from "react-router-dom";
 
 import "./App.css";
-import logo from "./galaxy.svg";
-import logo_1 from "./galaxy_1.svg";
 import Header from "./components/Header";
 import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
 import ThemeProvider from "./context/ThemeProvider";
@@ -24,34 +22,39 @@ const ScrollToTop: React.FC = () => {
     return null;
 };
 
-const App: React.FC = () => (
-    <>
-        <SEO
-            title="fragmepls - Home"
-            description="Personal portfolio and projects showcase of fragmepls"
-            keywords="portfolio, web development, react, typescript"
-            path="/"
-        />
-        <Router>
-            <ThemeProvider>
-                <InteractiveBlockGrid
-                    imageToTrace={Math.random() > 0.5 ? logo : logo_1}
-                    traceThreshold={150}
-                    traceDensity={1.5}
-                />
-                <Header/>
-                <ScrollToTop/>
-                <main className="app-content">
-                    <Routes>
-                        <Route path="/" element={<Home/>}/>
-                        <Route path="/about" element={<About/>}/>
-                        <Route path="/privacy" element={<PrivacyPolicy/>}/>
-                    </Routes>
-                </main>
-                <Footer/>
-            </ThemeProvider>
-        </Router>
-    </>
-);
+const App: React.FC = () => {
+    const logoModules = import.meta.glob('./assets/*.svg', {eager: true, import: 'default'});
+    const logos = Object.values(logoModules) as string[];
+    const randomLogo = logos[Math.floor(Math.random() * logos.length)];
+
+    return (<>
+            <SEO
+                title="fragmepls - Home"
+                description="Personal portfolio and projects showcase of fragmepls"
+                keywords="portfolio, web development, react, typescript"
+                path="/"
+            />
+            <Router>
+                <ThemeProvider>
+                    <InteractiveBlockGrid
+                        imageToTrace={randomLogo}
+                        traceThreshold={150}
+                        traceDensity={1.5}
+                    />
+                    <Header/>
+                    <ScrollToTop/>
+                    <main className="app-content">
+                        <Routes>
+                            <Route path="/" element={<Home/>}/>
+                            <Route path="/about" element={<About/>}/>
+                            <Route path="/privacy" element={<PrivacyPolicy/>}/>
+                        </Routes>
+                    </main>
+                    <Footer/>
+                </ThemeProvider>
+            </Router>
+        </>
+    );
+}
 
 export default App;
