@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Routes, useLocation} from "react-router-
 
 import "./App.css";
 import logo from "./galaxy.svg";
+import logo_1 from "./galaxy_1.svg";
 import Header from "./components/Header";
 import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
 import ThemeProvider from "./context/ThemeProvider";
@@ -34,7 +35,7 @@ const App: React.FC = () => (
         <Router>
             <ThemeProvider>
                 <InteractiveBlockGrid
-                    imageToTrace={logo}
+                    imageToTrace={Math.random() > 0.5 ? logo : logo_1}
                     traceThreshold={150}
                     traceDensity={1.5}
                 />
