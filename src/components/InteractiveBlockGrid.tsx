@@ -38,7 +38,7 @@ const InteractiveBlockGrid = ({
     const {theme} = useThemeContext();
 
     // Determine colors based on theme
-    const effectiveBaseColor = baseColor || (theme === 'dark' ? '#1a1a1a' : '#e8e8e8');
+    const effectiveBaseColor = baseColor || (theme === 'dark' ? '#2a2a2a' : '#e8e8e8');
     const effectiveHighlightColor = highlightColor || (theme === 'dark' ? '#ff2525' : '#535bf2');
 
     useEffect(() => {
@@ -278,7 +278,7 @@ const InteractiveBlockGrid = ({
             requestIdRef.current = requestAnimationFrame(animate);
         }
 
-        // Event handlers with proper typing
+        // Mouse move tracking
         const handleMouseMove = (e: MouseEvent) => {
             const pos = getMousePos(e);
             mouseVX = pos.x - lastMouseX;
@@ -288,6 +288,7 @@ const InteractiveBlockGrid = ({
             mouseMoved = true;
         };
 
+        // Left-click ray effect
         const handleMouseDown = (e: MouseEvent) => {
             if (e.button === 0) {
                 const pos = getMousePos(e);
@@ -298,6 +299,7 @@ const InteractiveBlockGrid = ({
             }
         };
 
+        // Right-click impulse effect
         const handleContextMenu = (e: MouseEvent) => {
             e.preventDefault();
             const pos = getMousePos(e);
@@ -323,7 +325,6 @@ const InteractiveBlockGrid = ({
             });
         };
 
-        // Add event listeners
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mousedown', handleMouseDown);
         window.addEventListener('contextmenu', handleContextMenu);
