@@ -50,7 +50,7 @@ This site is configured for continuous deployment to GitHub Pages using GitHub A
 
 ## TODO (Generated)
 
-* ~~Theme refinements~~
+* ~~**Theme refinements**~~
     * ~~Add animated theme transitions, system sync and per-page theme metadata. Example files: src/styles/variables.css,
       src/hooks/useTheme.ts.~~
 * **PWA & offline support**
@@ -61,8 +61,8 @@ This site is configured for continuous deployment to GitHub Pages using GitHub A
     * Serve AVIF/WebP, use src/components/ResponsiveImage.tsx and preload critical images.
 * **Accessibility improvements**
     * Add skip link, landmarks, keyboard focus styles, ARIA attributes and run automated checks with axe in CI.
-* **SEO & metadata**
-    * Dynamic meta tags per route, Open Graph, JSON-LD, sitemap.xml generator and robots.txt in public/.
+* ~~**SEO & metadata**~~
+    * ~~Dynamic meta tags per route, Open Graph, JSON-LD, sitemap.xml generator and robots.txt in public/.~~
 * Search & filtering for projects
     * Client-side fuzzy search, tags, and filters. Component: src/components/ProjectList.tsx.
 * Contact form + serverless endpoint

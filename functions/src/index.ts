@@ -22,11 +22,15 @@ export const submitInput = functions.https.onRequest(async (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
     try {
-        await admin.firestore().collection('userInputs').add({
+        const timestamp = Date.now();
+        const docId = `${timestamp}-${Math.random().toString(36).substring(2, 8)}`;
+
+        await admin.firestore().collection('userInputs').doc(docId).set({
             text,
             ip,
             timestamp: admin.firestore.FieldValue.serverTimestamp()
         });
+
         res.status(200).json({success: true});
     } catch (error) {
         res.status(500).json({error: 'Failed to save: ' + error});
