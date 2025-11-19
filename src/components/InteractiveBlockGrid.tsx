@@ -48,27 +48,29 @@ const InteractiveBlockGrid = ({
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
+        const dpr = window.devicePixelRatio || 1;
+        canvas.style.width = `${dimensions.width}px`;
+        canvas.style.height = `${dimensions.height}px`;
+        canvas.width = Math.round(dimensions.width * dpr);
+        canvas.height = Math.round(dimensions.height * dpr);
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
         let rayEffectActive = false;
         let rayEffectDuration = 0;
         const RAY_EFFECT_MAX_DURATION = 5;
         const rayIntensity = 10;
 
-        canvas.width = dimensions.width;
-        canvas.height = dimensions.height;
-
         const blockSize = 8;
         const spacing = 2.5;
-
         const blocks: Block[] = [];
 
         // Function to create blocks in grid pattern
         const createUniformGrid = () => {
             const cols = Math.floor(dimensions.width / (blockSize + spacing));
             const rows = Math.floor(dimensions.height / (blockSize + spacing));
-
             const gridWidth = cols * (blockSize + spacing) - spacing;
             const gridHeight = rows * (blockSize + spacing) - spacing;
-
             const offsetX = (dimensions.width - gridWidth) / 2;
             const offsetY = (dimensions.height - gridHeight) / 2;
 
@@ -91,12 +93,10 @@ const InteractiveBlockGrid = ({
 
         // Function to create blocks based on image data
         const createImageBasedGrid = (img: HTMLImageElement) => {
-            // Create temporary canvas to process image
             const tempCanvas = document.createElement('canvas');
             const tempCtx = tempCanvas.getContext('2d');
             if (!tempCtx) return;
 
-            // Calculate dimensions while maintaining aspect ratio
             let imgWidth = img.width;
             let imgHeight = img.height;
             const maxWidth = dimensions.width * 0.8;
@@ -112,32 +112,30 @@ const InteractiveBlockGrid = ({
                 imgHeight = maxHeight;
             }
 
-            tempCanvas.width = imgWidth;
-            tempCanvas.height = imgHeight;
-
-            // Draw image on temp canvas
+            tempCanvas.width = Math.round(imgWidth);
+            tempCanvas.height = Math.round(imgHeight);
             tempCtx.drawImage(img, 0, 0, imgWidth, imgHeight);
 
-            // Get image data
-            const imageData = tempCtx.getImageData(0, 0, imgWidth, imgHeight);
+            let imageData: ImageData | null = null;
+            try {
+                imageData = tempCtx.getImageData(0, 0, Math.round(imgWidth), Math.round(imgHeight));
+            } catch (err) {
+                console.error('Unable to read image data (CORS/tainted canvas). Ensure image is same-origin or server sends Access-Control-Allow-Origin.', err);
+                createUniformGrid();
+                return;
+            }
             const data = imageData.data;
-
-            // Calculate offsets to center the image
             const offsetX = (dimensions.width - imgWidth) / 2;
             const offsetY = (dimensions.height - imgHeight) / 2;
-
-            // Sample pixels and create blocks
             const sampleSize = Math.max(1, Math.floor(8 / traceDensity));
 
             for (let y = 0; y < imgHeight; y += sampleSize) {
                 for (let x = 0; x < imgWidth; x += sampleSize) {
-                    const pixelIndex = (y * imgWidth + x) * 4;
+                    const pixelIndex = (Math.floor(y) * Math.round(imgWidth) + Math.floor(x)) * 4;
                     const r = data[pixelIndex];
                     const g = data[pixelIndex + 1];
                     const b = data[pixelIndex + 2];
                     const a = data[pixelIndex + 3];
-
-                    // Calculate brightness (0-255)
                     const brightness = (r + g + b) / 3;
 
                     if (a > 0 && brightness < traceThreshold) {
@@ -163,6 +161,11 @@ const InteractiveBlockGrid = ({
         let mouseVX = 0;
         let mouseVY = 0;
         let mouseMoved = false;
+
+        const getMousePos = (e: MouseEvent) => {
+            const rect = canvas.getBoundingClientRect();
+            return {x: e.clientX - rect.left, y: e.clientY - rect.top};
+        };
 
         // Animation function
         function animate() {
@@ -259,6 +262,7 @@ const InteractiveBlockGrid = ({
         // Either load image or use uniform grid
         if (imageToTrace) {
             const img = new Image();
+            img.crossOrigin = 'anonymous';
             img.onload = () => {
                 createImageBasedGrid(img);
                 requestIdRef.current = requestAnimationFrame(animate);
@@ -276,37 +280,37 @@ const InteractiveBlockGrid = ({
 
         // Event handlers with proper typing
         const handleMouseMove = (e: MouseEvent) => {
-            mouseVX = e.clientX - lastMouseX;
-            mouseVY = e.clientY - lastMouseY;
-            lastMouseX = e.clientX;
-            lastMouseY = e.clientY;
+            const pos = getMousePos(e);
+            mouseVX = pos.x - lastMouseX;
+            mouseVY = pos.y - lastMouseY;
+            lastMouseX = pos.x;
+            lastMouseY = pos.y;
             mouseMoved = true;
         };
 
         const handleMouseDown = (e: MouseEvent) => {
             if (e.button === 0) {
+                const pos = getMousePos(e);
                 rayEffectActive = true;
                 rayEffectDuration = 0;
-                lastMouseX = e.clientX;
-                lastMouseY = e.clientY;
+                lastMouseX = pos.x;
+                lastMouseY = pos.y;
             }
         };
 
         const handleContextMenu = (e: MouseEvent) => {
             e.preventDefault();
-            const clickX = e.clientX;
-            const clickY = e.clientY;
-
+            const pos = getMousePos(e);
+            const clickX = pos.x;
+            const clickY = pos.y;
             for (const block of blocks) {
                 const dx = block.x - clickX;
                 const dy = block.y - clickY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 const maxDist = Math.max(dimensions.width, dimensions.height);
-
                 const impulseStrength = 30 * (1 - Math.min(1, dist / maxDist));
                 const normalizedDx = dx / (dist || 1);
                 const normalizedDy = dy / (dist || 1);
-
                 block.vx += normalizedDx * impulseStrength;
                 block.vy += normalizedDy * impulseStrength;
             }
@@ -348,7 +352,8 @@ const InteractiveBlockGrid = ({
                 left: 0,
                 width: '100%',
                 height: '100%',
-                zIndex: 0
+                zIndex: 0,
+                pointerEvents: 'none'
             }}
         />
     );
