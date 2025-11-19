@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Footer from "./components/Footer";
+import {SEO} from "./components/SEO";
 
 const ScrollToTop: React.FC = () => {
     const location = useLocation();
@@ -23,25 +24,33 @@ const ScrollToTop: React.FC = () => {
 };
 
 const App: React.FC = () => (
-    <Router>
-        <ThemeProvider>
-            <InteractiveBlockGrid
-                imageToTrace={logo}
-                traceThreshold={150}
-                traceDensity={1.5}
-            />
-            <Header/>
-            <ScrollToTop/>
-            <main className="app-content">
-                <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/about" element={<About/>}/>
-                    <Route path="/privacy" element={<PrivacyPolicy/>}/>
-                </Routes>
-            </main>
-            <Footer/>
-        </ThemeProvider>
-    </Router>
+    <>
+        <SEO
+            title="fragmepls - Home"
+            description="Personal portfolio and projects showcase of fragmepls"
+            keywords="portfolio, web development, react, typescript"
+            path="/"
+        />
+        <Router>
+            <ThemeProvider>
+                <InteractiveBlockGrid
+                    imageToTrace={logo}
+                    traceThreshold={150}
+                    traceDensity={1.5}
+                />
+                <Header/>
+                <ScrollToTop/>
+                <main className="app-content">
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/about" element={<About/>}/>
+                        <Route path="/privacy" element={<PrivacyPolicy/>}/>
+                    </Routes>
+                </main>
+                <Footer/>
+            </ThemeProvider>
+        </Router>
+    </>
 );
 
 export default App;
