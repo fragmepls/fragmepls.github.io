@@ -16,7 +16,7 @@ const PrivacyPolicy: React.FC = () => {
 
                 <section>
                     <h2>Information I Collect</h2>
-                    <p>When you submit a message through our contact form, I collect:</p>
+                    <p>When you submit a message through the contact form, I collect:</p>
                     <ul>
                         <li>The text content you submit</li>
                         <li>Your IP address</li>
