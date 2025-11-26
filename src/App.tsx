@@ -3,13 +3,14 @@ import {BrowserRouter as Router, Route, Routes, useLocation} from "react-router-
 
 import "./App.css";
 import Header from "./components/Header";
-import InteractiveBlockGrid from "./components/InteractiveBlockGrid";
+import PrimaryBlockGrid from "./components/PrimaryBlockGrid";
 import ThemeProvider from "./context/ThemeProvider";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Footer from "./components/Footer";
 import {SEO} from "./components/SEO";
+import {SecondaryBlockGrid} from "./components/SecondaryBlockGrid";
 
 const ScrollToTop: React.FC = () => {
     const location = useLocation();
@@ -25,7 +26,8 @@ const ScrollToTop: React.FC = () => {
 const App: React.FC = () => {
     const logoModules = import.meta.glob('./assets/*.svg', {eager: true, import: 'default'});
     const logos = Object.values(logoModules) as string[];
-    const randomLogo = logos[Math.floor(Math.random() * logos.length)];
+
+    const [randomLogo] = React.useState(() => logos[Math.floor(Math.random() * logos.length)]);
 
     return (<>
             <SEO
@@ -36,11 +38,12 @@ const App: React.FC = () => {
             />
             <Router>
                 <ThemeProvider>
-                    <InteractiveBlockGrid
+                    <PrimaryBlockGrid
                         imageToTrace={randomLogo}
                         traceThreshold={150}
                         traceDensity={1.5}
                     />
+                    <SecondaryBlockGrid/>
                     <Header/>
                     <ScrollToTop/>
                     <main className="app-content">
