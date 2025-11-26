@@ -9,6 +9,7 @@ interface Block {
     vx: number;
     vy: number;
     springFactor: number;
+    color: string;
 }
 
 export const SecondaryBlockGrid = () => {
@@ -21,20 +22,17 @@ export const SecondaryBlockGrid = () => {
     });
 
     const {theme} = useThemeContext();
-    const blockColor = theme === 'dark' ? '#1a1a1a' : '#f5f5f5';
     const bodyBackgroundColor = theme === 'dark' ? '#0a0a0a' : '#ffffff';
 
     useEffect(() => {
-        const rotationSpeed = 0.02; // Slower rotation speed
+        const rotationSpeed = 0.01;
         const rotateAnimation = () => {
             rotationRef.current = (rotationRef.current + rotationSpeed) % 360;
             requestIdRef.current = requestAnimationFrame(rotateAnimation);
         };
         rotateAnimation();
         return () => {
-            if (requestIdRef.current) {
-                cancelAnimationFrame(requestIdRef.current);
-            }
+            if (requestIdRef.current) cancelAnimationFrame(requestIdRef.current);
         };
     }, []);
 
@@ -58,6 +56,26 @@ export const SecondaryBlockGrid = () => {
         const worldOffsetX = (dimensions.width - worldSize) / 2;
         const worldOffsetY = (dimensions.height - worldSize) / 2;
 
+        const colorRange = theme === 'dark'
+            ? {hMin: 30, hMax: 80, sMin: 70, sMax: 100, lMin: 40, lMax: 70, a: 0.2}
+            : {hMin: 260, hMax: 340, sMin: 60, sMax: 95, lMin: 35, lMax: 65, a: 0.2};
+
+        const randIn = (min: number, max: number) => min + Math.random() * (max - min);
+        const makeColor = (range: {
+            hMin: number,
+            hMax: number,
+            sMin: number,
+            sMax: number,
+            lMin: number,
+            lMax: number,
+            a: number
+        }) => {
+            const h = Math.round(randIn(range.hMin, range.hMax));
+            const s = Math.round(randIn(range.sMin, range.sMax));
+            const l = Math.round(randIn(range.lMin, range.lMax));
+            return `hsla(${h}, ${s}%, ${l}%, ${range.a})`;
+        };
+
         const createBlocks = () => {
             blocks.length = 0;
             const numBlocks = Math.floor((worldSize * worldSize) / 2500);
@@ -70,14 +88,12 @@ export const SecondaryBlockGrid = () => {
                     vx: 0,
                     vy: 0,
                     springFactor: 0.02 + Math.random() * 0.02,
+                    color: makeColor(colorRange),
                 });
             }
         };
 
-        let lastMouseX = 0;
-        let lastMouseY = 0;
-        let mouseVX = 0;
-        let mouseVY = 0;
+        let lastMouseX = 0, lastMouseY = 0, mouseVX = 0, mouseVY = 0;
 
         const transformMouseCoordinates = (x: number, y: number) => {
             const angle = rotationRef.current;
@@ -93,26 +109,17 @@ export const SecondaryBlockGrid = () => {
             return {x: rotatedX + centerX, y: rotatedY + centerY};
         };
 
-        const handleMouseMove = (e: MouseEvent) => {
-            const rect = canvas.getBoundingClientRect();
-            const transformedPos = transformMouseCoordinates(e.clientX - rect.left, e.clientY - rect.top);
-            mouseVX = transformedPos.x - lastMouseX;
-            mouseVY = transformedPos.y - lastMouseY;
-            lastMouseX = transformedPos.x;
-            lastMouseY = transformedPos.y;
-        };
-
         const animate = () => {
             if (!ctx) return;
             ctx.fillStyle = bodyBackgroundColor;
             ctx.fillRect(0, 0, dimensions.width, dimensions.height);
 
             ctx.save();
+            ctx.globalCompositeOperation = theme === 'dark' ? 'lighter' : 'source-over';
             ctx.translate(dimensions.width / 2, dimensions.height / 2);
             ctx.rotate((rotationRef.current * Math.PI) / 180);
             ctx.translate(-dimensions.width / 2, -dimensions.height / 2);
 
-            ctx.fillStyle = blockColor;
             for (const block of blocks) {
                 const dx = block.x - lastMouseX;
                 const dy = block.y - lastMouseY;
@@ -130,17 +137,27 @@ export const SecondaryBlockGrid = () => {
                 block.offsetX += (0 - block.offsetX) * block.springFactor;
                 block.offsetY += (0 - block.offsetY) * block.springFactor;
 
+                ctx.fillStyle = block.color;
                 ctx.fillRect(block.x + block.offsetX, block.y + block.offsetY, blockSize, blockSize);
             }
             ctx.restore();
             requestIdRef.current = requestAnimationFrame(animate);
         };
 
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = canvas.getBoundingClientRect();
+            const transformedPos = transformMouseCoordinates(e.clientX - rect.left, e.clientY - rect.top);
+            mouseVX = transformedPos.x - lastMouseX;
+            mouseVY = transformedPos.y - lastMouseY;
+            lastMouseX = transformedPos.x;
+            lastMouseY = transformedPos.y;
+        };
+
         createBlocks();
         animate();
 
-        window.addEventListener('mousemove', handleMouseMove);
         const handleResize = () => setDimensions({width: window.innerWidth, height: window.innerHeight});
+        window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('resize', handleResize);
 
         return () => {
@@ -148,7 +165,7 @@ export const SecondaryBlockGrid = () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('resize', handleResize);
         };
-    }, [dimensions, blockColor, bodyBackgroundColor]);
+    }, [bodyBackgroundColor, dimensions, theme]);
 
     return (
         <canvas

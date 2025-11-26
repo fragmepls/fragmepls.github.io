@@ -36,8 +36,12 @@ const PrimaryBlockGrid = ({
         height: window.innerHeight
     });
 
+    const {theme} = useThemeContext();
+    const effectiveBaseColor = baseColor || (theme === 'dark' ? '#2a2a2a' : '#e8e8e8');
+    const effectiveHighlightColor = highlightColor || (theme === 'dark' ? '#ff2525' : '#535bf2');
+
     useEffect(() => {
-        const rotationSpeed = 0.05; // Faster rotation speed
+        const rotationSpeed = 0.1; // Faster rotation speed
         let animationId: number;
 
         const rotate = () => {
@@ -48,10 +52,6 @@ const PrimaryBlockGrid = ({
         animationId = requestAnimationFrame(rotate);
         return () => cancelAnimationFrame(animationId);
     }, []);
-
-    const {theme} = useThemeContext();
-    const effectiveBaseColor = baseColor || (theme === 'dark' ? '#2a2a2a' : '#e8e8e8');
-    const effectiveHighlightColor = highlightColor || (theme === 'dark' ? '#ff2525' : '#535bf2');
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -65,6 +65,11 @@ const PrimaryBlockGrid = ({
         canvas.width = Math.round(dimensions.width * dpr);
         canvas.height = Math.round(dimensions.height * dpr);
         ctx.scale(dpr, dpr);
+
+        let rayEffectActive = false;
+        let rayEffectDuration = 0;
+        const RAY_EFFECT_MAX_DURATION = 5;
+        const rayIntensity = 10;
 
         const blockSize = 8;
         const spacing = 2.5;
@@ -174,6 +179,23 @@ const PrimaryBlockGrid = ({
             ctx.rotate((rotationRef.current * Math.PI) / 180);
             ctx.translate(-dimensions.width / 2, -dimensions.height / 2);
 
+            if (rayEffectActive) {
+                if (rayEffectDuration < RAY_EFFECT_MAX_DURATION) {
+                    for (const block of blocks) {
+                        const dx = block.x - lastMouseX;
+                        const dy = block.y - lastMouseY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const influence = Math.max(0, 100 - dist) / 100;
+
+                        block.vx += rayIntensity * influence;
+                        block.vy += rayIntensity * influence;
+                    }
+                    rayEffectDuration++;
+                } else {
+                    rayEffectActive = false;
+                }
+            }
+
             for (const block of blocks) {
                 const dx = block.x - lastMouseX;
                 const dy = block.y - lastMouseY;
@@ -248,6 +270,16 @@ const PrimaryBlockGrid = ({
             lastMouseY = pos.y;
         };
 
+        const handleMouseDown = (e: MouseEvent) => {
+            if (e.button === 0) {
+                const pos = getMousePos(e);
+                rayEffectActive = true;
+                rayEffectDuration = 0;
+                lastMouseX = pos.x;
+                lastMouseY = pos.y;
+            }
+        };
+
         const handleContextMenu = (e: MouseEvent) => {
             e.preventDefault();
             const {x: clickX, y: clickY} = getMousePos(e);
@@ -263,12 +295,14 @@ const PrimaryBlockGrid = ({
 
         const handleResize = () => setDimensions({width: window.innerWidth, height: window.innerHeight});
         window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mousedown', handleMouseDown);
         window.addEventListener('contextmenu', handleContextMenu);
         window.addEventListener('resize', handleResize);
 
         return () => {
             if (requestIdRef.current) cancelAnimationFrame(requestIdRef.current);
             window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mousedown', handleMouseDown);
             window.removeEventListener('contextmenu', handleContextMenu);
             window.removeEventListener('resize', handleResize);
         };
